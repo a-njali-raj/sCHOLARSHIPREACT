@@ -21,14 +21,14 @@ html, body {
     padding: 20px;
 }
 
-.container {
+.reg-container {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    width: 100%;
+    width: 800px;
     max-width: 1200px;
     padding: 20px;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .form-card {
@@ -97,14 +97,14 @@ html, body {
 }
 
 
-.button-container {
+.regbutton-container {
     display: flex;             
     justify-content: center;  
     margin-top: 20px;
 }
 
 
-.btn {
+.reg-btn {
     width: 200px;
     background-color: #007bff; 
     color: white;
@@ -116,7 +116,7 @@ html, body {
     transition: background-color 0.3s ease; 
 }
 
-.btn:hover {
+.reg-btn:hover {
     background-color: #0056b3;
 }
 
@@ -150,4 +150,5 @@ html, body {
       max-width: 100%;
       padding: 20px;
     }
+    
 }

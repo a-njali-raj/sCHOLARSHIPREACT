@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Login.css';
+import '../assets/Login.css';
 
 export default class Login extends Component {
   constructor(props) {
@@ -9,6 +9,7 @@ export default class Login extends Component {
       password: '',
       emailError: '',
       passwordError: '',
+      isButtonDisabled: true,
     };
   }
 
@@ -16,11 +17,10 @@ export default class Login extends Component {
     const email = event.target.value;
     const emailPattern = /^(?!.*\.\.)[a-zA-Z0-9._%-]+@[a-zA-Z]+(\.[a-zA-Z]{2,})+$/;
     this.setState({ email }, () => {
-    
       if (!emailPattern.test(email)) {
-        this.setState({ emailError: 'Invalid email format' });
+        this.setState({ emailError: 'Invalid email format' }, this.updateButtonState);
       } else {
-        this.setState({ emailError: '' });
+        this.setState({ emailError: '' }, this.updateButtonState);
       }
     });
   };
@@ -29,45 +29,50 @@ export default class Login extends Component {
     const password = event.target.value;
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}/;
     this.setState({ password }, () => {
- 
       if (!passwordPattern.test(password)) {
-        this.setState({ passwordError: 'Password must be at least 8 characters,a special character and a capital letter' });
+        this.setState({
+          passwordError: 'Password must be 8-20 characters, include at least one uppercase letter, one number, and one special character.'
+        }, this.updateButtonState);
       } else {
-        this.setState({ passwordError: '' });
+        this.setState({ passwordError: '' }, this.updateButtonState);
       }
     });
   };
 
-  
+  updateButtonState = () => {
+    const { email, password, emailError, passwordError } = this.state;
+    const isButtonDisabled = !email || !password || emailError || passwordError;
+    this.setState({ isButtonDisabled });
+  };
 
-//   handleSubmit = (event) => {
-//     event.preventDefault();
-//     const { email, password, emailError, passwordError } = this.state;
+  handleSubmit = (event) => {
+    event.preventDefault();
+    const { email, password, emailError, passwordError } = this.state;
 
+    // Prevent form submission if there are validation errors
+    if (emailError || passwordError || !email || !password) {
+      console.log("Validation failed. Form not submitted.");
+      return;
+    }
 
-//     if (emailError || passwordError) {
-//       return; 
-//     }
-
-
-//     console.log('Email:', email);
-//     console.log('Password:', password);
-//   };
+    // Simulating form submission without backend connection
+    console.log('Email:', email);
+    console.log('Password:', password);
+  };
 
   render() {
-    const { email, password, emailError, passwordError } = this.state;
+    const { email, password, emailError, passwordError, isButtonDisabled } = this.state;
 
     return (
       <div className="background">
-        <div className="container">
+        <div className="log-container">
           <div className="form-wrapper">
             <div className="form-card">
               <div className="form-header">
                 <h3>Login</h3>
               </div>
               <div className="form-body">
-              {/* onSubmit={this.handleSubmit} */}
-                <form>
+                <form onSubmit={this.handleSubmit}>
                   <div className="form-group">
                     <label htmlFor="email">Email Address</label>
                     <input
@@ -97,7 +102,13 @@ export default class Login extends Component {
                   </div>
 
                   <div className="form-submit">
-                    <button type="submit" className="btn">Login</button>
+                    <button
+                      type="submit"
+                      className="btn"
+                      disabled={isButtonDisabled}
+                    >
+                      Login
+                    </button>
                   </div>
                 </form>
               </div>
