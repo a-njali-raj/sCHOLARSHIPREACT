@@ -84,6 +84,7 @@ class Login extends Component {
 
       console.log('Login successful:', data);
       localStorage.setItem('isAuthenticated', true);
+      localStorage.setItem('userInfo', JSON.stringify(data));
       this.props.navigate('/welcomeform', { state: { successMessage: data.message } });
       
     } catch (error) {
