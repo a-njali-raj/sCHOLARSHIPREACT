@@ -117,4 +117,70 @@
     align-items: center; 
 
   }
+  .login-submit {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    margin-top: 20px; 
+  }
   
+  .login-btn {
+    background: linear-gradient(90deg, #091581, #3d609b); 
+    border: none; 
+    color: white;
+    padding: 12px 24px; 
+    border-radius: 5px; 
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease; 
+    width: 150px;
+  }
+  
+  .login-btn:hover {
+    background: linear-gradient(90deg, #386fcd, #5f61d9); 
+  }
+  
+  .toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1000;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.success {
+    background-color: #4caf50; /* Green background */
+    color: white;
+}
+
+.error {
+    background-color: #f44336; /* Red background */
+    color: white;
+}
+.toast {
+  position: fixed;
+  top: 20px; /* Distance from the top of the viewport */
+  right: 20px; /* Distance from the right of the viewport */
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000; /* Make sure it's above other content */
+  transition: opacity 0.5s ease-in-out;
+}
+
+.success {
+  background-color: #4caf50; /* Green color for success messages */
+  color: white; /* Text color */
+}
+
+.error {
+  background-color: #f44336; /* Red color for error messages */
+  color: white; /* Text color */
+}
+
+.error-message {
+  color: #f44336; /* Color for individual error messages */
+  font-size: 0.9em; /* Slightly smaller font */
+}

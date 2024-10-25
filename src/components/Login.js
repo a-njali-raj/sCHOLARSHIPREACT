@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom'; 
+import axios from 'axios'; 
 import '../assets/Login.css';
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -10,7 +12,25 @@ export default class Login extends Component {
       emailError: '',
       passwordError: '',
       isButtonDisabled: true,
+      showToast: false,
+      toastMessage: '',
+      isSuccess: true,
     };
+  }
+
+  componentDidMount() {
+    const { location } = this.props; 
+    if (location.state && location.state.successMessage) {
+      this.setState({
+        showToast: true,
+        toastMessage: location.state.successMessage,
+        isSuccess: true,
+      });
+
+      setTimeout(() => {
+        this.setState({ showToast: false });
+      }, 3000);
+    }
   }
 
   handleEmailChange = (event) => {
@@ -45,23 +65,52 @@ export default class Login extends Component {
     this.setState({ isButtonDisabled });
   };
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     event.preventDefault();
     const { email, password, emailError, passwordError } = this.state;
 
-    // Prevent form submission if there are validation errors
     if (emailError || passwordError || !email || !password) {
       console.log("Validation failed. Form not submitted.");
       return;
     }
 
-    // Simulating form submission without backend connection
-    console.log('Email:', email);
-    console.log('Password:', password);
+    try {
+      const response = await axios.post('http://localhost:8080/api/users/login', {
+        email,
+        password,
+      });
+
+      const data = response.data;
+
+      console.log('Login successful:', data);
+      localStorage.setItem('isAuthenticated', true);
+      this.props.navigate('/welcomeform', { state: { successMessage: data.message } });
+      
+    } catch (error) {
+      if (error.response) {
+        console.error('Login failed:', error.response.data);
+        this.setState({
+          showToast: true,
+          toastMessage: error.response.data.error,
+          isSuccess: false,
+        });
+      } else {
+        console.error('An error occurred:', error);
+        this.setState({
+          showToast: true,
+          toastMessage: 'An unexpected error occurred. Please try again later.',
+          isSuccess: false,
+        });
+      }
+
+      setTimeout(() => {
+        this.setState({ showToast: false });
+      }, 3000);
+    }
   };
 
   render() {
-    const { email, password, emailError, passwordError, isButtonDisabled } = this.state;
+    const { email, password, emailError, passwordError, isButtonDisabled, showToast, toastMessage, isSuccess } = this.state;
 
     return (
       <div className="background">
@@ -72,6 +121,11 @@ export default class Login extends Component {
                 <h3>Login</h3>
               </div>
               <div className="form-body">
+                {showToast && (
+                  <div className={`toast ${isSuccess ? 'success' : 'error'}`}>
+                    {toastMessage}
+                  </div>
+                )}
                 <form onSubmit={this.handleSubmit}>
                   <div className="form-group">
                     <label htmlFor="email">Email Address</label>
@@ -101,10 +155,10 @@ export default class Login extends Component {
                     {passwordError && <span className="error-message">{passwordError}</span>}
                   </div>
 
-                  <div className="form-submit">
+                  <div className="login-submit">
                     <button
                       type="submit"
-                      className="btn"
+                      className="login-btn"
                       disabled={isButtonDisabled}
                     >
                       Login
@@ -123,3 +177,12 @@ export default class Login extends Component {
     );
   }
 }
+
+
+const LoginWithLocationAndNavigate = (props) => {
+  const location = useLocation(); 
+  const navigate = useNavigate(); 
+  return <Login {...props} location={location} navigate={navigate} />;
+};
+
+export default LoginWithLocationAndNavigate;

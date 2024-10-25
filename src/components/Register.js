@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
 import '../assets/Register.css';
+import axios from 'axios'; 
+import { useNavigate } from 'react-router-dom';
+
 
 const Register = () => {
   const [formData, setFormData] = useState({
     fname: '',
     lname: '',
     email: '',
-    phone: '',
+    phonenumber: '',
     dob: '',
-    address: '',
+    addressLine: '',
     city: '',
     state: '',
     postalCode: '',
-    yearOrGradeLevel: '',
+    gradeOrYearLevel: '',
     gpaScore: '',
     gwaPercentile: '',
     expectedGraduationDate: '',
@@ -48,6 +51,7 @@ const Register = () => {
     }
   };
 
+  
   const validateLname = (value) => {
     if (!value) {
       setFormErrors((prevErrors) => ({ ...prevErrors, lnameError: 'Last name is required.' }));
@@ -57,6 +61,8 @@ const Register = () => {
       setFormErrors((prevErrors) => ({ ...prevErrors, lnameError: '' }));
     }
   };
+  
+  
   const validateAddress = (value) => {
     const addressPattern = /^[a-zA-Z][a-zA-Z\s]*(\d{0,4})?$/; // Starts with a letter, allows up to 4 digits, and allows spaces
   
@@ -68,6 +74,8 @@ const Register = () => {
       setFormErrors((prevErrors) => ({ ...prevErrors, addressError: '' }));
     }
   };
+ 
+ 
   const validateCity = (value) => {
     const cityPattern = /^[a-zA-Z\s]*$/; 
   
@@ -79,6 +87,8 @@ const Register = () => {
       setFormErrors((prevErrors) => ({ ...prevErrors, cityError: '' }));
     }
   };
+  
+  
   const validateState = (value) => {
     const statePattern = /^[a-zA-Z\s]*$/; // Allows only letters and spaces
   
@@ -91,6 +101,8 @@ const Register = () => {
     }
   };
   
+  
+  
   const handleEmailChange = (emailValue) => {
     const emailPattern = /^(?!.*\.\.)[a-zA-Z0-9._%-]+@[a-zA-Z]+(\.[a-zA-Z]{2,})+$/;
     setFormData((prevData) => ({ ...prevData, email: emailValue }));
@@ -102,6 +114,9 @@ const Register = () => {
     }
   };
 
+  
+  
+  
   const handlePhoneChange = (phoneValue) => {
     setFormData((prevData) => ({ ...prevData, phone: phoneValue }));
 
@@ -114,6 +129,8 @@ const Register = () => {
     }
   };
 
+  
+  
   const handleDobChange = (dobValue) => {
     setFormData((prevData) => ({ ...prevData, dob: dobValue }));
 
@@ -123,8 +140,11 @@ const Register = () => {
       setFormErrors((prevErrors) => ({ ...prevErrors, dobError: '' }));
     }
   };
+  
+  
+  
   const validatePostalCode = (value) => {
-    const postalCodePattern = /^\d{6}$/; // Matches exactly 6 digits
+    const postalCodePattern = /^\d{6}$/; 
   
     if (!value) {
       setFormErrors((prevErrors) => ({ ...prevErrors, postalCodeError: 'Postal code is required.' }));
@@ -134,8 +154,11 @@ const Register = () => {
       setFormErrors((prevErrors) => ({ ...prevErrors, postalCodeError: '' }));
     }
   };
+  
+  
+  
   const validateYearOrGradeLevel = (value) => {
-    const yearOrGradePattern = /^(Grade \d+|Year \d+)$/; // Matches 'Grade X' or 'Year Y'
+    const yearOrGradePattern = /^(Grade \d+|Year \d+)$/; 
   
     if (!value) {
       setFormErrors((prevErrors) => ({ ...prevErrors, yearOrGradeLevelError: 'Grade or Year Level is required.' }));
@@ -146,8 +169,10 @@ const Register = () => {
     }
   };
 
+  
+  
   const validateGpaScore = (value) => {
-    const gpaValue = parseFloat(value); // Convert the value to a float
+    const gpaValue = parseFloat(value); 
   
     if (!value) {
       setFormErrors((prevErrors) => ({ ...prevErrors, gpaScoreError: 'GPA Score is required.' }));
@@ -157,8 +182,11 @@ const Register = () => {
       setFormErrors((prevErrors) => ({ ...prevErrors, gpaScoreError: '' }));
     }
   };
+  
+  
+  
   const validateGwaPercentile = (value) => {
-    const gwaValue = parseFloat(value); // Convert the value to a float
+    const gwaValue = parseFloat(value); 
   
     if (!value) {
       setFormErrors((prevErrors) => ({ ...prevErrors, gwaPercentileError: 'GWA Percentile is required.' }));
@@ -168,6 +196,9 @@ const Register = () => {
       setFormErrors((prevErrors) => ({ ...prevErrors, gwaPercentileError: '' }));
     }
   };
+  
+  
+  
   
   const validateSchoolName = (value) => {
     if (!value) {
@@ -179,6 +210,9 @@ const Register = () => {
     }
   };
   
+  
+  
+  
   const validateDepartment = (value) => {
     if (!value) {
       setFormErrors((prevErrors) => ({ ...prevErrors, departmentError: 'Department is required.' }));
@@ -188,6 +222,9 @@ const Register = () => {
       setFormErrors((prevErrors) => ({ ...prevErrors, departmentError: '' }));
     }
   };
+  
+  
+  
   const validatePassword = (value) => {
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}/;
     if (!value) {
@@ -209,20 +246,24 @@ const Register = () => {
     }
   };
   
+  
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
 
+  
+
     if (name === 'fname') validateFname(value);
     if (name === 'lname') validateLname(value);
     if (name === 'email') handleEmailChange(value);
-    if (name === 'phone') handlePhoneChange(value);
+    if (name === 'phonenumber') handlePhoneChange(value);
     if (name === 'dob') handleDobChange(value);
-    if (name === 'address') validateAddress(value);
+    if (name === 'addressLine') validateAddress(value);
     if (name === 'city') validateCity(value);
     if (name === 'state') validateState(value);
     if (name === 'postalCode') validatePostalCode(value);
-    if (name === 'yearOrGradeLevel') validateYearOrGradeLevel(value);
+    if (name === 'gradeOrYearLevel') validateYearOrGradeLevel(value);
     if (name === 'gpaScore') validateGpaScore(value);
     if (name === 'gwaPercentile') validateGwaPercentile(value);
     if (name === 'schoolName') validateSchoolName(value);
@@ -231,22 +272,40 @@ const Register = () => {
 
 
   };
-
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if there are any validation errors
-    const hasErrors = Object.values(formErrors).some(error => error !== '');
-
-    // If there are errors, do not submit the form
+    const hasErrors = Object.values(formErrors).some((error) => error !== '');
     if (hasErrors) {
-      alert('Please fix the errors before submitting the form.');
-      return;
+        alert('Please fix the errors before submitting the form.');
+        return;
     }
 
-    // Proceed with form submission (you can call your API here)
-    console.log('Form submitted successfully!', formData);
-  };
+    try {
+        const response = await axios.post('http://localhost:8080/api/users/register', formData, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        console.log('Registration successful!', response.data);
+        // Redirect to the login page with a success message
+        navigate('/login', {
+            state: { successMessage: 'Registration successful! Please log in.' } // Pass success message
+        });
+    } catch (error) {
+        if (error.response) {
+            console.error('Registration failed:', error.response.data);
+            alert('Registration failed: ' + error.response.data.message);
+        } else {
+            console.error('Error:', error.message);
+            alert('An error occurred: ' + error.message);
+        }
+    }
+};
+
   return (
     <div className="background">
       <div className="reg-container">
@@ -255,7 +314,9 @@ const Register = () => {
             <h3>REGISTER!</h3>
           </div>
           <div className="form-body">
-            <form>
+    
+
+          <form onSubmit={handleSubmit}>
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="fname">First Name</label>
@@ -301,13 +362,13 @@ const Register = () => {
                   {formErrors.emailError && <span className="error-message">{formErrors.emailError}</span>}
                 </div>
                 <div className="form-group">
-                  <label htmlFor="phone">Phone Number</label>
+                  <label htmlFor="phonenumber">Phone Number</label>
                   <input
                     type="tel"
                     id="phone"
-                    name="phone"
+                    name="phonenumber"
                     placeholder="Enter phone number"
-                    value={formData.phone}
+                    value={formData.phonenumber}
                     onChange={handleChange}
                   />
                   {formErrors.phoneError && (
@@ -331,13 +392,13 @@ const Register = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="address">Address</label>
+                <label htmlFor="addressLine">Address</label>
                 <input
                   type="text"
                   id="address"
-                  name="address"
+                  name="addressLine"
                   placeholder="Enter address"
-                  value={formData.address}
+                  value={formData.addressLine}
                   onChange={handleChange}
                 />
                 {formErrors.addressError && (
@@ -390,13 +451,13 @@ const Register = () => {
 
               <div className="form-row">
                 <div className="form-group">
-                  <label htmlFor="YearOrGradeLevel">Grade/Year Level</label>
+                  <label htmlFor="gradeOrYearLevel">Grade/Year Level</label>
                   <input
                     type="text"
                     id="YearOrGradeLevel"
-                    name="yearOrGradeLevel"
+                    name="gradeOrYearLevel"
                     placeholder="Enter your Grade or Year Level"
-                    value={formData.yearOrGradeLevel}
+                    value={formData.gradeOrYearLevel}
                     onChange={handleChange}
                   />
                   {formErrors.yearOrGradeLevelError && (<div className="error-message">{formErrors.yearOrGradeLevelError}</div>)}
