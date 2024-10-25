@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom'; 
 import axios from 'axios'; 
-import '../assets/Login.css';
+import './Login.css';
 
 class Login extends Component {
   constructor(props) {

@@ -1,12 +1,12 @@
 import './App.css';
-import Forgotpassword from './components/Forgotpassword';
-import Login from './components/Login';
-import Register from './components/Register';
-import Resetpassword from './components/Resetpassword';
-import Welcome from './components/Welcome';
+import Forgotpassword from './components/Forgopasswordpage/Forgotpassword';
+import Login from './components/Loginpage/Login';
+import Register from './components/Registerpage/Register';
+import Resetpassword from './components/Resetpasswordpage/Resetpassword';
+import Welcome from './components/Welcomepage/Welcome';
 
 import {BrowserRouter as Router,Routes,Route} from 'react-router-dom'
-import WelcomeForm from './components/WelcomeForm';
+import WelcomeForm from './components/Welcomeformpage/WelcomeForm';
 
 
 

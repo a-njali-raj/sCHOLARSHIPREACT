@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../assets/Register.css';
+import './Register.css';
 import axios from 'axios'; 
 import { useNavigate } from 'react-router-dom';
 
@@ -291,9 +291,9 @@ const Register = () => {
         });
 
         console.log('Registration successful!', response.data);
-        // Redirect to the login page with a success message
+
         navigate('/login', {
-            state: { successMessage: 'Registration successful! Please log in.' } // Pass success message
+            state: { successMessage: 'Registration successful! Please log in.' } 
         });
     } catch (error) {
         if (error.response) {

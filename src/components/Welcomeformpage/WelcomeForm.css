@@ -51,5 +51,5 @@
     transition: background-color 0.3s;
   }
 .logout-button:hover {
-    background-color: #a82f52; /* Darker red on hover */
+    background-color: #a82f52; 
 }

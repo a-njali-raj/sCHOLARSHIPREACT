@@ -23,7 +23,7 @@
     border-radius: 10px; 
     padding: 20px;
     box-shadow: none; 
-    background-image: url('../assets/login.jpg');
+    background-image: url('../../assets/login.jpg');
     
   }
   
@@ -108,7 +108,7 @@
   }
   
   .background {
-    background-image: url('../assets/loginback.jpg'); 
+    background-image: url('../../assets/loginback.jpg'); 
     background-size: cover; 
     background-position: center;
     min-height: 100vh; 

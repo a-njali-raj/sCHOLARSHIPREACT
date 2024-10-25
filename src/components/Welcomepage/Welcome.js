@@ -1,6 +1,6 @@
 import React from 'react'
 // import { Link } from 'react-router-dom';
-import '../assets/Welcome.css';
+import './Welcome.css';
 function Welcome() {
   return (
     <div className='welcome-container'>

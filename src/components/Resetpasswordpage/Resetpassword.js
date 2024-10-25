@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
-import '../assets/Resetpassword.css';
+import { useNavigate } from 'react-router-dom'; 
+import './Resetpassword.css';
 
 function Resetpassword() {
   const [newPassword, setNewPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [token, setToken] = useState(null);
-  const [showToast, setShowToast] = useState(false); // State for the toaster
-  const [toastMessage, setToastMessage] = useState(''); // State for the toast message
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [showToast, setShowToast] = useState(false); 
+  const [toastMessage, setToastMessage] = useState('');
+  const navigate = useNavigate(); 
 
   const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}/;
 
@@ -42,11 +42,10 @@ function Resetpassword() {
         newPassword: newPassword,
       });
 
-      // Show toaster message
       setToastMessage("Password successfully reset. You can log in now.");
       setShowToast(true);
 
-      // Navigate to the login page with the success message
+    
       navigate('/login', { state: { successMessage: "Password reset successfully!" } });
     } catch (error) {
       console.error(error.response ? error.response.data.error : "Error resetting password");
