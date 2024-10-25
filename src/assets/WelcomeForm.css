@@ -1,0 +1,55 @@
+.welcomeform-container {
+    padding: 20px;
+    text-align: center;
+    background-color: #cce2ec; 
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 0; 
+    height: 100vh; 
+    width: 100vw; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+}
+
+
+.welcomeform-title {
+  font-size: 2.5rem; 
+  margin-bottom: 10px;
+  color: #333; 
+}
+
+
+
+.user-info-box {
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 20px auto; 
+  text-align: center; 
+  width: 500px;
+  font-style:oblique; 
+}
+
+.welcomeform-element {
+  font-size: 1.2rem;
+  margin: 5px 0;
+}
+.logout-button {
+    position: absolute; 
+    top: 20px; 
+    right: 20px; 
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: white;
+    background-color: #641b0b; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+.logout-button:hover {
+    background-color: #a82f52; /* Darker red on hover */
+}
