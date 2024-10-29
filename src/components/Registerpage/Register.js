@@ -36,7 +36,8 @@ const Register = () => {
     postalCodeError: '',
     schoolNameError:'',
     departmentError: '',
-    validatePassword:''
+    validatePassword:'',
+    expectedGraduationDateError:''
     });
 
   const validateFname = (value) => {
@@ -64,7 +65,7 @@ const Register = () => {
   
   
   const validateAddress = (value) => {
-    const addressPattern = /^[a-zA-Z][a-zA-Z\s]*(\d{0,4})?$/; // Starts with a letter, allows up to 4 digits, and allows spaces
+    const addressPattern = /^[a-zA-Z][a-zA-Z\s]*(\d{0,4})?$/; 
   
     if (!value) {
       setFormErrors((prevErrors) => ({ ...prevErrors, addressError: 'Address is required.' }));
@@ -90,7 +91,7 @@ const Register = () => {
   
   
   const validateState = (value) => {
-    const statePattern = /^[a-zA-Z\s]*$/; // Allows only letters and spaces
+    const statePattern = /^[a-zA-Z\s]*$/; 
   
     if (!value) {
       setFormErrors((prevErrors) => ({ ...prevErrors, stateError: 'State is required.' }));
@@ -101,20 +102,42 @@ const Register = () => {
     }
   };
   
-  
-  
   const handleEmailChange = (emailValue) => {
-    const emailPattern = /^(?!.*\.\.)[a-zA-Z0-9._%-]+@[a-zA-Z]+(\.[a-zA-Z]{2,})+$/;
+    const emailPattern = /^(?!.*\.\.)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+ 
     setFormData((prevData) => ({ ...prevData, email: emailValue }));
 
-    if (!emailPattern.test(emailValue)) {
-      setFormErrors((prevErrors) => ({ ...prevErrors, emailError: 'Invalid email format' }));
-    } else {
-      setFormErrors((prevErrors) => ({ ...prevErrors, emailError: '' }));
-    }
-  };
 
-  
+    if (!emailPattern.test(emailValue)) {
+        setFormErrors((prevErrors) => ({ ...prevErrors, emailError: 'Invalid email format' }));
+        return;
+    } else {
+        setFormErrors((prevErrors) => ({ ...prevErrors, emailError: '' }));
+    }
+
+    fetch(`http://localhost:8080/api/users/check-email?email=${encodeURIComponent(emailValue)}`)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then((exists) => {
+           
+            if (exists) {
+                setFormErrors((prevErrors) => ({ ...prevErrors, emailError: 'Email already registered,Please login' }));
+            } else {
+                setFormErrors((prevErrors) => ({ ...prevErrors, emailError: '' }));
+            }
+        })
+        .catch((error) => {
+            console.error('Error checking email:', error);
+            setFormErrors((prevErrors) => ({ ...prevErrors, emailError: '' }));
+        });
+};
+
+
   
   
   const handlePhoneChange = (phoneValue) => {
@@ -197,7 +220,18 @@ const Register = () => {
     }
   };
   
-  
+  const validateExpectedGraduationDate = (value) => {
+    const today = new Date();
+    const gradDate = new Date(value);
+
+    if (!value) {
+      setFormErrors((prevErrors) => ({ ...prevErrors, expectedGraduationDateError: 'Expected graduation date is required.' }));
+    } else if (gradDate <= today) {
+      setFormErrors((prevErrors) => ({ ...prevErrors, expectedGraduationDateError: 'Expected graduation date must be in the future.' }));
+    } else {
+      setFormErrors((prevErrors) => ({ ...prevErrors, expectedGraduationDateError: '' }));
+    }
+  };
   
   
   const validateSchoolName = (value) => {
@@ -269,6 +303,7 @@ const Register = () => {
     if (name === 'schoolName') validateSchoolName(value);
     if (name === 'department') validateDepartment(value);
     if (name === 'password') validatePassword(value);
+    if (name === 'expectedGraduationDate') validateExpectedGraduationDate(value);
 
 
   };
@@ -385,6 +420,8 @@ const Register = () => {
                   name="dob"
                   value={formData.dob}
                   onChange={handleChange}
+                  min="2000-01-01"
+                  max="2012-12-31"
                 />
                 {formErrors.dobError && (
                   <div className="error-message">{formErrors.dobError}</div>
@@ -498,6 +535,9 @@ const Register = () => {
                     value={formData.expectedGraduationDate}
                     onChange={handleChange}
                   />
+                  
+      {formErrors.expectedGraduationDateError && <span className="error-message">{formErrors.expectedGraduationDateError}</span>}
+
                 </div>
               </div>
 
